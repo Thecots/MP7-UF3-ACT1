@@ -170,10 +170,30 @@ function pintar_taulell($partida){
   $con = mysqli_connect("localhost","root","root","connect4") or exit(mysqli_connect_error());
   $sql = "SELECT * FROM moviments WHERE id_partida=$partida"
   $result=mysqli_query($con, $sql) or exit(mysqli_error($con));
+  $taulell = [
+    [0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0],
+  ]
   while($reg=mysqli_fetch_array($result)){
-    ]
+    $num_col=$reg["columna_moviment"];
+    $jugador=$reg["jugador"];
+    $num_col--;
+    while($taulell[$c][$num_col] != 0){
+      $c--;
+    };
+    $taulell[$c][$num_col] = $jugador
   }
-
+  /* pintar taulell */
+  for($t = 0; $t < 6; $t++){
+    for($tt = 0; $tt < 6; $tt++){
+      echo "|".$taulell[$t][$tt];
+    }
+    echo "|<br>"; 
+  }
 }
 
 
