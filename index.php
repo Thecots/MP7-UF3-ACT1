@@ -5,17 +5,17 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Connect 4 - dcots</title>
-  <link rel="icon" href="/img/logo.png">
-  <link rel="stylesheet" href="/css/global.css">
-  <link rel="stylesheet" href="/css/home.css">
-  <link rel="stylesheet" href="/css/buscarPartida.css">
+  <link rel="icon" href="./img/logo.png">
+  <link rel="stylesheet" href="./css/global.css">
+  <link rel="stylesheet" href="./css/home.css">
+  <link rel="stylesheet" href="./css/buscarPartida.css">
 </head>
 <body>
 <?php
   /* HOME -> Introduce nombre de usuario */
   if(!isset($_REQUEST['accio'])){?>
     <main class="home">
-      <img src="/img/fondo.jpg" alt="">
+      <img src="./img/fondo.jpg" alt="">
       <section>
         <div class="logo">
           <h1>CONNECT 4</h1>

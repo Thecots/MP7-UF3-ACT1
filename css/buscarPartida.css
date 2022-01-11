@@ -1,0 +1,126 @@
+body{
+  background-color: white;
+}
+
+.buscarPartida{
+  margin: 40px auto;
+  max-width: 100%;
+  width: 1500px;
+  padding: 10px;
+  height: fit-content;
+}
+
+.buscarPartida header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px;
+  border-bottom: 2px solid black;
+}
+
+.buscarPartida header h1{
+  font-weight: 400;
+}
+.buscarPartida header h1::after{
+  content: ".";
+  position: absolute;
+  animation: buscando 2.5s infinite linear;
+  margin-left: 3px;
+}
+
+@keyframes buscando{
+  0%{
+    content: ".";
+  }50%{
+    content: ". .";
+  }100%{
+    content: ". . .";
+  }
+}
+
+.buscarPartida header input[type="submit"]{
+  border: none;
+  outline: none;
+  font-size: 14px;
+  padding: 6px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  color: white;
+  background-color: royalblue;
+  transition: transform;
+}
+.buscarPartida header input[type="submit"]:hover{
+  background-color: rgb(58, 92, 195);
+}
+.buscarPartida header input[type="submit"]:active{
+  transform: scale(0.95);
+  background-color: rgb(91, 131, 251)
+}
+
+.buscarPartida section{
+  margin-top: 25px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.buscarPartida section > h1{
+  margin-top: 100px;
+  text-align: center; 
+  font-size: 40px;
+  font-weight: 500;
+}
+
+.buscarPartida section div{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid rgb(218, 218, 218);
+  border-radius: 4px;
+  height: 60px;
+}
+
+.buscarPartida section div span {
+  display: flex;
+  gap: 20px;
+}
+
+.buscarPartida section div span h3{
+  font-weight: 500;
+}
+
+.buscarPartida section div span h3:nth-child(1){
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.buscarPartida section div a {
+  outline: none;
+  font-size: 14px;
+  padding: 8px 30px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  color: white;
+  text-decoration: none;
+  color: #000;
+  background-color: lightgreen;
+  text-transform: capitalize;
+  letter-spacing: 1px;
+  font-weight: 700;
+  font-size: 16px;
+  border: 2px solid rgba(86, 144, 86, 0.116);
+  transition: transform;
+}
+
+.buscarPartida section div a:active{
+  transform: scale(0.95);
+}
+
+
+.buscarPartida section a {
+ right: 0;
+}
