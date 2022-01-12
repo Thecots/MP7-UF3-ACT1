@@ -46,11 +46,20 @@
     <main class="buscarPartida">
       <header>
           <h1>Buscando partidas</h1>
+          <span>
+          <form action="machine.php">
+            <input hidden name="username" value="<?php echo $_REQUEST['jugador2']?>">
+            <input hidden name="turn" value="1">
+            <input hidden name="start" value="1">
+            <input type="submit" value="Jugar contra IA">
+          </form>
           <form action="index.php">
             <input hidden name="jugador1" value="<?php echo $_REQUEST['jugador2']?>">
             <input hidden name="accio" value="crear_partida">
             <input type="submit" value="Crear partida">
           </form> 
+          </span>
+          
       </header>
       <section>
         <?php
@@ -201,7 +210,6 @@
             </div>
             <div class="finishgame">
               <a href="index.php?jugador2=<?php echo $_REQUEST['username']; ?>&accio=buscar_partida">Salir</a>
-              <a href="index.php">Repetición</a>
             </div>
            
             

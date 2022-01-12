@@ -18,6 +18,11 @@ body{
   border-bottom: 2px solid black;
 }
 
+.buscarPartida header span{
+  display: flex;
+  gap: 25px;
+}
+
 .buscarPartida header h1,
 .buscarPartida header h2{
   font-size: 30px;
@@ -44,7 +49,9 @@ body{
   }
 }
 
-.buscarPartida header input[type="submit"]{
+.buscarPartida header input[type="submit"],
+.exitxd
+{
   border: none;
   outline: none;
   font-size: 14px;
@@ -62,6 +69,20 @@ body{
 .buscarPartida header input[type="submit"]:active{
   transform: scale(0.95);
   background-color: rgb(91, 131, 251)
+}
+.exitxd{
+  background-color: red !important;
+  text-decoration: none;
+  font-size: 15px;
+}
+.exitxd:active{
+  transform: scale(0.95);
+
+}
+
+.buscarPartida header span form:first-child input[type="submit"] {
+  background-color: lightgreen;
+  color: black;
 }
 
 .buscarPartida section{
@@ -242,10 +263,6 @@ body{
 
 }
 
-.finishgame a:last-child{
-  background-color: lightgreen;
-
-}
 .finishgame a:active{
   transform: scale(0.95);
 }
