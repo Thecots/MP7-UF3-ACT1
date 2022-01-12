@@ -18,7 +18,9 @@ body{
   border-bottom: 2px solid black;
 }
 
-.buscarPartida header h1{
+.buscarPartida header h1,
+.buscarPartida header h2{
+  font-size: 30px;
   font-weight: 400;
 }
 .buscarPartida header h1::after{
@@ -26,6 +28,10 @@ body{
   position: absolute;
   animation: buscando 2.5s infinite linear;
   margin-left: 3px;
+}
+
+.noAnimate{
+  animation:  linear;
 }
 
 @keyframes buscando{
@@ -123,4 +129,123 @@ body{
 
 .buscarPartida section a {
  right: 0;
+}
+
+.tablero{
+  margin-top: 25px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.board{
+  background-color: royalblue;
+  width: fit-content;
+  padding: 10px;
+  display: grid;
+  border-radius: 10px;
+  grid-template-columns: repeat(7, 80px);
+  grid-template-rows: repeat(6, 80px);
+
+}
+
+.board span{
+  padding: 15px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.board span::before{
+  content: "";
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background-color: white;
+  position: absolute;
+}
+
+.board .circle1::before{
+  background-color: yellow;
+}
+
+.board .circle2::before{
+  background-color: red;
+}
+
+
+.tablero .btn{
+  background-color: royalblue;
+  width: fit-content;
+  padding: 10px;
+  display: grid;
+  border-radius: 10px;
+  grid-template-columns: repeat(7, 80px);
+}
+
+.tablero .btn a{
+  margin: 5px;
+  text-decoration: none;
+  height: 80px;
+  background-color: rgb(211, 211, 211);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: black;
+  font-weight: bolder;
+  border-radius: 5px;
+  cursor: not-allowed;
+  font-size: 25px;
+}
+
+
+.tablero .btn.pointer a{
+  cursor: pointer;
+  background-color: white;
+}
+
+.finishgame {
+  width: 875px;
+  padding: 5px;
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.finishgame a{
+  outline: none;
+  font-size: 14px;
+  padding: 8px 30px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  color: white;
+  text-decoration: none;
+  color: #000;
+  text-transform: capitalize;
+  letter-spacing: 1px;
+  font-weight: 700;
+  font-size: 16px;
+  border: 2px solid rgba(86, 144, 86, 0.116);
+  transition: transform;
+}
+
+.finishgame a:first-child{
+  background-color: red;
+
+}
+
+.finishgame a:last-child{
+  background-color: lightgreen;
+
+}
+.finishgame a:active{
+  transform: scale(0.95);
 }

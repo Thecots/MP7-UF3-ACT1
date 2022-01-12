@@ -8,7 +8,8 @@ CREATE TABLE partides(
   data DATE,
   nom_jugador1 VARCHAR(100),
   nom_jugador2 VARCHAR(100),
-  torn INT
+  torn INT,
+  winner INT
 );
 
 CREATE TABLE moviments(

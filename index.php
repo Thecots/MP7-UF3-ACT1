@@ -12,7 +12,7 @@
 </head>
 <body>
 <?php
-  /* HOME -> Introduce nombre de usuario */
+  /* HOME + INTRODUCIR NOMBRE DE USUARIO */
   if(!isset($_REQUEST['accio'])){?>
     <main class="home">
       <img src="./img/fondo.jpg" alt="">
@@ -36,7 +36,7 @@
     <?php
   };
 
-  
+  /* BUSCAR PARTIDA + BOTÓN CREAR PARTIDA */
   if(isset($_REQUEST['accio']) && $_REQUEST['accio'] == 'buscar_partida'){
       $con = mysqli_connect("localhost","daw_user","P@ssw0rd","connect4") or exit(mysqli_connect_error());
       $sql = "SELECT * FROM partides WHERE ISNULL(nom_jugador2)";
@@ -64,10 +64,9 @@
                 <h3>Creada por: <?php echo $reg['nom_jugador1']?></h3><h3>-</h3>
                 <h3><?php echo $reg['data'] ?></h3>
               </span>
-              <a href="index.php?accio=connectar_a_partida&jugador2=<?php echo $_REQUEST['jugador2']?>&partida=<?php echo $reg['id_partida']?>">JUGAR</a>
+              <a href="index.php?accio=connectar_a_partida&jugador2=<?php echo $_REQUEST['jugador2']?>&partida=<?php echo $reg['id_partida']?>&username=<?php echo $_REQUEST['jugador2']?>">JUGAR</a>
           </div>
             <?php
-           
           }
           if($x){
             echo '<h1>NO HAY NINGUNA PARTIDA DISPONIBLE :(</h1>';
@@ -79,141 +78,194 @@
       <script>
         setTimeout(() => {
           window.location.href="index.php?jugador2=<?php echo $_REQUEST['jugador2']?>&accio=buscar_partida"
-        }, 5000);
+        }, 2500);
       </script>
       <?php
-  }
+  };
 
-
-
-
-
-
+  /* CREAR PARTIDA */
   if(isset($_REQUEST['accio']) && $_REQUEST['accio']=="crear_partida"){
-    /* Crear la partida en la base de datos */
     $con = mysqli_connect("localhost","daw_user","P@ssw0rd","connect4") or exit(mysqli_connect_error());
-    $sql = "INSERT INTO partides VALUES (null,'".date("Y-m-d")."','".$_REQUEST['jugador1']."',null,1)";
+    $sql = "INSERT INTO partides VALUES (null,'".date("Y-m-d")."','".$_REQUEST['jugador1']."',null,1,NULL)";
     $result=mysqli_query($con, $sql) or exit(mysqli_error($con));
     $id=mysqli_insert_id($con);
     ?>
-    <h3>Partida creada num <?php echo $id; ?></h3>
-    <h4>hola Esperant contrincant...</h4>
     <script>
-      setTimeout(() => {
-        window.location.href = "index.php?contador=1&accio=comprovar_partida&jugador=1&partida=<?php echo $id?>";
-      }, 1000);
+     window.location.href = "index.php?contador=1&accio=comprovar_partida&jugador=1&partida=<?php echo $id?>&username=<?php echo $_REQUEST['jugador1']; ?>";
     </script>
     <?php
-  }
+  };
 
-
-
-
-
+  /* PARTIDA CREADA, ESPERANDO/ENCONTRADO JUGADOR 2  */
   if(isset($_REQUEST['accio']) && $_REQUEST['accio'] == 'comprovar_partida'){
-    /* jugador 1 esperando para jugador 2 */
-    $contador=$_REQUEST['contador']+1;
     $jugador=$_REQUEST['jugador'];
     $partida=$_REQUEST['partida'];
-    ?>
-    <h3>Partida creada num <?php echo $partida?></h3>;
-    <?php
     $con = mysqli_connect("localhost","daw_user","P@ssw0rd","connect4") or exit(mysqli_connect_error());
     $sql = "SELECT * FROM partides WHERE id_partida = $partida";
     $result=mysqli_query($con, $sql) or exit(mysqli_error($con));
     $reg=mysqli_fetch_array($result);
-    if($reg['nom_jugador2'] != ''){
-      /* jugador 2 encontrado */
-      ?>
-        <h1>Tenemos rival!</h1>
-        <script>
-          setTimeout(() => {
-            window.location.href = "index.php?accio=moviment_partida&jugador=1&partida=<?php echo $partida?>";
-          }, 1000);
-        </script>
+    ?>
+    <main class="buscarPartida">
+     
       <?php
-    }else{
-        $contador = $_REQUEST['contador'];
-        $contador += 1;
-      ?>
-        <h4>Esperant contrincant <?php echo $_REQUEST['contador']?><h4>
-        <script>
-          setTimeout(() => {
-            window.location.href = "index.php?contador=<?php echo $_REQUEST['contador']+1?>&accio=comprovar_partida&jugador=1&partida=<?php echo $partida?>";
-          }, 1000);
-        </script>
-      <?php
-    };
-  }
-    
+        if($reg['nom_jugador2'] != ''){
+          ?>
+           <header>
+            <h2>Partida Creada - Rival Encontrado! (3)</h2>
+            </header>
+          <?php
+          pintar_taulellNull();
+          echo "<div class='btn'><a>1</a><a>2</a><a>3</a><a>4</a><a>5</a><a>6</a><a>7</a></div>";
+          echo "</div>";
+          ?>
+            <script>
+              let x = document.querySelector('header h2');
 
-
-
-
-
+              setTimeout(() => {
+                x.innerText  = 'Partida Creada - Rival Encontrado! (2)';
+              }, 1000);
+              setTimeout(() => {
+                x.innerText  = 'Partida Creada - Rival Encontrado! (1)';
+              }, 2000);
+              setTimeout(() => {
+                window.location.href = "index.php?accio=moviment_partida&jugador=1&partida=<?php echo $partida?>&username=<?php echo $_REQUEST['username']?>";
+              }, 3000);
+            </script>
+          <?php
+        }else{
+          ?>
+           <header>
+            <h1>Partida Creada - Esperando rival</h1>
+            </header>
+          <?php
+          pintar_taulellNull();
+          echo "<div class='btn'><a>1</a><a>2</a><a>3</a><a>4</a><a>5</a><a>6</a><a>7</a></div></div>";
+          ?>
+        </main>
+            <script>
+              setTimeout(() => {
+                window.location.href = "index.php?accio=comprovar_partida&jugador=1&partida=<?php echo $partida?>&username=<?php echo $_REQUEST['username']?>";
+              }, 2500);
+            </script>
+          <?php
+        };
+  };
+  
+  /* PARTIDA */
   if(isset($_REQUEST['accio']) && $_REQUEST['accio'] == 'moviment_partida'){
     $jugador=$_REQUEST['jugador'];
     $partida=$_REQUEST['partida'];
-    /* mirar turno */
     $con = mysqli_connect("localhost","daw_user","P@ssw0rd","connect4") or exit(mysqli_connect_error());
     $sql = "SELECT * FROM partides WHERE id_partida = $partida";
     $result=mysqli_query($con, $sql) or exit(mysqli_error($con));
     $reg=mysqli_fetch_array($result);
 
-    echo "<h3>TAULELL</h3>";
-    pintar_taulell($partida);
 
-    if($reg['torn'] == $jugador){
-      /* Turno jugador 1 */ 
-      ?>
-      <form action="index.php">
-        <label for="columna">Columna: </label>
-        <input type="number" name="columna" min="1" max="7" require>
-        <input hidden name="accio" value="enviar_moviment">
-        <input hidden name="jugador" value="<?php echo $jugador; ?>">
-        <input hidden name="partida" value="<?php echo $partida; ?>">
-        <input type="submit" value="Enviar moviment">
-      </form>
-      <?php
-    }else{
-      ?>
-        <h4>Esperant moviemnt del jugador <?php echo $jugador == 1 ? "2" : "1";?> </h4>
-        <script>
-          setTimeout(() => {
-            window.location.href = "index.php?accio=moviment_partida&jugador=<?php echo $jugador ?>&partida=<?php echo $partida ?>";
-        }, 1000);
-        </script>
-      <?php
+    if($reg['winner'] == NULL){
+      $winner = checkWinner($partida);
+      if($winner == 1){
+        $sql = "UPDATE partides SET winner = 1 WHERE id_partida=".$_REQUEST['partida'];
+        $result=mysqli_query($con, $sql) or exit(mysqli_error($con));
+      }else if($winner == 2){
+        $sql = "UPDATE partides SET winner = 2 WHERE id_partida=".$_REQUEST['partida'];
+        $result=mysqli_query($con, $sql) or exit(mysqli_error($con));
+      };
     }
-  }
+
+    
+    
+      ?>
+   <main class="buscarPartida">
+     <?php
+    
+    
+    
+    if($reg['winner'] != NULL){?>
+            <header>
+              <h2>Partida <?php echo $partida?> - <?php echo $reg['winner'] == $jugador ? "Has ganado la partida!": "El jugador ".$reg['winner']." ha ganado!" ?></h2>
+            </header>
+            <div class="tablero">
+              <div class="board">
+                <?php pintar_taulell($partida); ?>
+              </div>
+              <div class='btn'>
+                <a>1</a> 
+                <a>2</a>
+                <a>3</a>
+                <a>4</a>
+                <a>5</a>
+                <a>6</a> 
+                <a>7</a>
+              <div>
+            </div>
+            </div>
+            <div class="finishgame">
+              <a href="index.php?jugador2=<?php echo $_REQUEST['username']; ?>&accio=buscar_partida">Salir</a>
+              <a href="index.php">Repetición</a>
+            </div>
+           
+            
+            <?php
+    }else if($reg['torn'] == $jugador){?>
+        <header>
+          <h2>Partida <?php echo $partida?> - Tú turno!</h2>
+        </header>
+        <div class="tablero">
+          <div class="board">
+            <?php pintar_taulell($partida); ?>
+          </div>
+          <div class='btn pointer'>
+            <a href="index.php?accio=enviar_moviment&jugador=<?php echo $jugador;?>&partida=<?php echo $partida;?>&columna=1&username=<?php echo $_REQUEST['username']?>">1</a> 
+            <a href="index.php?accio=enviar_moviment&jugador=<?php echo $jugador;?>&partida=<?php echo $partida;?>&columna=2&username=<?php echo $_REQUEST['username']?>">2</a>
+            <a href="index.php?accio=enviar_moviment&jugador=<?php echo $jugador;?>&partida=<?php echo $partida;?>&columna=3&username=<?php echo $_REQUEST['username']?>">3</a>
+            <a href="index.php?accio=enviar_moviment&jugador=<?php echo $jugador;?>&partida=<?php echo $partida;?>&columna=4&username=<?php echo $_REQUEST['username']?>">4</a>
+            <a href="index.php?accio=enviar_moviment&jugador=<?php echo $jugador;?>&partida=<?php echo $partida;?>&columna=5&username=<?php echo $_REQUEST['username']?>">5</a>
+            <a href="index.php?accio=enviar_moviment&jugador=<?php echo $jugador;?>&partida=<?php echo $partida;?>&columna=6&username=<?php echo $_REQUEST['username']?>">6</a> 
+            <a href="index.php?accio=enviar_moviment&jugador=<?php echo $jugador;?>&partida=<?php echo $partida;?>&columna=7&username=<?php echo $_REQUEST['username']?>">7</a>
+          <div>
+        </div>
+        <?php
+        }else{ ?>
+            <header>
+              <h1>Partida <?php echo $partida?> - Esperando movimento del jugador <?php echo $jugador == 1? 2:1; ?></h1>
+            </header>
+            <div class="tablero">
+              <div class="board">
+                <?php pintar_taulell($partida); ?>
+              </div>
+              <div class='btn'>
+                <a>1</a> 
+                <a>2</a>
+                <a>3</a>
+                <a>4</a>
+                <a>5</a>
+                <a>6</a> 
+                <a>7</a>
+              <div>
+            </div>
+            <script>
+              setTimeout(() => {
+                window.location.href = "index.php?accio=moviment_partida&jugador=<?php echo $jugador ?>&partida=<?php echo $partida ?>&username=<?php echo $_REQUEST['username']?>";
+              }, 1000);
+            </script>
+          <?php
+        }; ?>
+      </main><?php
+    };
 
 
-
-
-
-
-
-
+  /* UNIRSE A UNA PARTIDA */
   if(isset($_REQUEST['accio']) && $_REQUEST['accio'] == 'connectar_a_partida'){
-    $jugador=$_REQUEST['jugador2'];
     $partida=$_REQUEST['partida'];
-
     $con = mysqli_connect("localhost","daw_user","P@ssw0rd","connect4") or exit(mysqli_connect_error());
-    $sql = "UPDATE partides SET nom_jugador2 = '$jugador' WHERE id_partida=".$_REQUEST['partida'];
+    $sql = "UPDATE partides SET nom_jugador2 = 2 WHERE id_partida=".$_REQUEST['partida'];
     $result=mysqli_query($con, $sql) or exit(mysqli_error($con));
     ?>
-    <h3>CONECTAT A LA PARTIDA <?php echo $_REQUEST['partida'] ?></h3>
-    <h4>Esperant moviment del jugador 1...</h4>
     <script>
-          setTimeout(() => {
-            window.location.href = "index.php?accio=moviment_partida&jugador=2&partida=<?php echo $partida ?>";
-        }, 1000);
+      window.location.href = "index.php?accio=moviment_partida&jugador=2&partida=<?php echo $partida ?>&username=<?php echo $_REQUEST['username']?>";
     </script>
     <?php
   }
-
-
-
 
   /* GUARDA EL MOVIMENTO, CAMBIA DE TURNO */
   if(isset($_REQUEST['accio']) && $_REQUEST['accio'] == 'enviar_moviment'){
@@ -228,18 +280,13 @@
     $sql = "UPDATE partides SET torn = IF(torn=1,2,1) WHERE id_partida=$partida";
     $result=mysqli_query($con, $sql) or exit(mysqli_error($con));
     ?>
-    <h3>Aquí va el taulell</h3>
-    <h4>Moviment gravat</h4>
       <script>
-        setTimeout(() => {
-          window.location.href = "index.php?accio=moviment_partida&jugador=<?php echo $jugador ?>&partida=<?php echo $partida ?>";
-      }, 1000);
+          window.location.href = "index.php?accio=moviment_partida&jugador=<?php echo $jugador ?>&partida=<?php echo $partida ?>&username=<?php echo $_REQUEST['username']?>";
         </script>
     <?php
-  }
+  };
 
-
-
+  /* PINTAR TABLERO CON FICHAS DE LA PARTIDA */
   function pintar_taulell($partida){
     $con = mysqli_connect("localhost","daw_user","P@ssw0rd","connect4") or exit(mysqli_connect_error());
     $sql = "SELECT * FROM moviments WHERE id_partida=$partida";
@@ -263,14 +310,165 @@
       };
       $taulell[$c][$num_col] = $jugador;
     };
-    /* pintar taulell */
     for($t = 0; $t < 6; $t++){
-      for($tt = 0; $tt < 6; $tt++){
-        echo "|".$taulell[$t][$tt];
+      for($tt = 0; $tt < 7; $tt++){
+        echo "<span class='circle".$taulell[$t][$tt]."'></span>";
       };
-      echo "|<br>"; 
     };
   };
+
+  /* PINTAR TABLERO SIN FICHAS */
+  function pintar_taulellNull(){
+    $taulell = [
+      [0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0],
+    ];
+
+    echo "<div class='tablero'><div class='board'>";
+    for($t = 0; $t < 6; $t++){
+      for($tt = 0; $tt < 7; $tt++){
+        echo "<span class='circle".$taulell[$t][$tt]."'></span>";
+      };
+    };
+    echo "</div>";
+  }
+
+  function checkWinner($partida){
+    $con = mysqli_connect("localhost","daw_user","P@ssw0rd","connect4") or exit(mysqli_connect_error());
+    $sql = "SELECT * FROM moviments WHERE id_partida=$partida";
+    $result=mysqli_query($con, $sql) or exit(mysqli_error($con));
+    $taulell = [
+      [0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0],
+    ];
+
+    while($reg=mysqli_fetch_array($result)){
+      $num_col=$reg["columna_moviment"];
+      $jugador=$reg["jugador"];
+      $num_col--;
+      $c = 5;
+      while($taulell[$c][$num_col] != 0){
+        $c--;
+      };
+      $taulell[$c][$num_col] = $jugador;
+    };
+
+
+    for($t = 0; $t < 6; $t++){
+        $n_uns=0;
+        for($tt =0;$tt<7;$tt++){
+            if($taulell[$t][$tt]==1){
+                $n_uns++;
+                if($n_uns == 4){
+                    return 1;
+                }
+            }else{
+                $n_uns=0;
+            }
+        }
+    };
+    for($t = 0; $t < 6; $t++){
+        $n_uns=0;
+        for($tt =0;$tt<7;$tt++){
+            if($taulell[$t][$tt]==2){
+                $n_uns++;
+                if($n_uns == 4){
+                    return 2;
+                }
+            }else{
+                $n_uns=0;
+            }
+        }
+    };
+    for($t = 0; $t < 7; $t++){
+        $n_uns=0;
+        for($tt =0;$tt<6;$tt++){
+            if($taulell[$tt][$t]==1){
+                $n_uns++;
+                if($n_uns == 4){
+                    return 1;
+                }
+            }else{
+                $n_uns=0;
+            }
+        }
+    };
+    for($t = 0; $t < 7; $t++){
+        $n_uns=0;
+        for($tt =0;$tt<6;$tt++){
+            if($taulell[$tt][$t]==2){
+                $n_uns++;
+                if($n_uns == 4){
+                    return 2;
+                }
+            }else{
+                $n_uns=0;
+            }
+        }
+    };
+    for($t = -3; $t < 3; $t++){
+        $n_uns = 0;
+        for($tt=0;$tt < 7; $tt++){
+            if(($t+$tt)>=0 && ($t+$tt)<6 && $tt>=0 &&$tt<7){
+                if($taulell[$t+$tt][$tt] == 1){
+                    $n_uns++;
+                    if($n_uns >= 4) return 1;
+                }else{
+                    $n_uns = 0;
+                }
+            }
+        }
+    }
+    for($t = 3; $t <= 8; $t++){
+        $n_uns = 0;
+        for($tt=0;$tt < 7; $tt++){
+            if(($t-$tt)>=0 && ($t-$tt)<6 && $tt>=0 &&$tt<7){
+                if($taulell[$t-$tt][$tt] == 1){
+                    $n_uns++;
+                    if($n_uns >= 4) return 1;
+                }else{
+                    $n_uns = 0;
+                }
+            }
+        }
+    }
+    for($t = -3; $t < 3; $t++){
+        $n_uns = 0;
+        for($tt=0;$tt < 7; $tt++){
+            if(($t+$tt)>=0 && ($t+$tt)<6 && $tt>=0 &&$tt<7){
+                if($taulell[$t+$tt][$tt] == 2){
+                    $n_uns++;
+                    if($n_uns >= 4) return 2;
+                }else{
+                    $n_uns = 0;
+                }
+            }
+        }
+    }
+    for($t = 3; $t <= 8; $t++){
+        $n_uns = 0;
+        for($tt=0;$tt < 7; $tt++){
+            if(($t-$tt)>=0 && ($t-$tt)<6 && $tt>=0 &&$tt<7){
+                if($taulell[$t-$tt][$tt] == 2){
+                    $n_uns++;
+                    if($n_uns >= 4) return 2;
+                }else{
+                    $n_uns = 0;
+                }
+            }
+        }
+    }
+    return 3;
+}
+
 
 ?>
 </body>
