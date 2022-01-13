@@ -223,13 +223,7 @@
             <?php pintar_taulell($partida); ?>
           </div>
           <div class='btn pointer'>
-            <a href="index.php?accio=enviar_moviment&jugador=<?php echo $jugador;?>&partida=<?php echo $partida;?>&columna=1&username=<?php echo $_REQUEST['username']?>">1</a> 
-            <a href="index.php?accio=enviar_moviment&jugador=<?php echo $jugador;?>&partida=<?php echo $partida;?>&columna=2&username=<?php echo $_REQUEST['username']?>">2</a>
-            <a href="index.php?accio=enviar_moviment&jugador=<?php echo $jugador;?>&partida=<?php echo $partida;?>&columna=3&username=<?php echo $_REQUEST['username']?>">3</a>
-            <a href="index.php?accio=enviar_moviment&jugador=<?php echo $jugador;?>&partida=<?php echo $partida;?>&columna=4&username=<?php echo $_REQUEST['username']?>">4</a>
-            <a href="index.php?accio=enviar_moviment&jugador=<?php echo $jugador;?>&partida=<?php echo $partida;?>&columna=5&username=<?php echo $_REQUEST['username']?>">5</a>
-            <a href="index.php?accio=enviar_moviment&jugador=<?php echo $jugador;?>&partida=<?php echo $partida;?>&columna=6&username=<?php echo $_REQUEST['username']?>">6</a> 
-            <a href="index.php?accio=enviar_moviment&jugador=<?php echo $jugador;?>&partida=<?php echo $partida;?>&columna=7&username=<?php echo $_REQUEST['username']?>">7</a>
+            <?php buttons($partida); ?>  
           <div>
         </div>
         <?php
@@ -282,7 +276,7 @@
     $columna=$_REQUEST['columna'];
     $con = mysqli_connect("localhost","daw_user","P@ssw0rd","connect4") or exit(mysqli_connect_error());
     $sql = "INSERT INTO moviments VALUES (NULL,'".date("H:i:s")."',NULL,$jugador,$columna,$partida)";
-    echo $sql;
+
     $result=mysqli_query($con, $sql) or exit(mysqli_error($con));
 
     $sql = "UPDATE partides SET torn = IF(torn=1,2,1) WHERE id_partida=$partida";
@@ -477,7 +471,79 @@
     return 3;
 }
 
+function buttons($id){
+  $con = mysqli_connect("localhost","daw_user","P@ssw0rd","connect4") or exit(mysqli_connect_error());
+  $sql = "SELECT * FROM moviments WHERE id_partida=$id";
+  $result=mysqli_query($con, $sql) or exit(mysqli_error($con));
+  $taulell = [
+    [0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0],
+  ];
 
+  while($reg=mysqli_fetch_array($result)){
+    $num_col=$reg["columna_moviment"];
+    $jugador=$reg["jugador"];
+    $num_col--;
+    $c = 5;
+    while($taulell[$c][$num_col] != 0){
+      $c--;
+    };
+    $taulell[$c][$num_col] = $jugador;
+  };
+
+  /* 1 */
+  if($taulell[0][0] == 0){
+    echo  "<a href='index.php?accio=enviar_moviment&jugador=".$_REQUEST['jugador']."&partida=".$_REQUEST['partida']."&columna=1&username=".$_REQUEST['username']."' >1</a>"; 
+  }else{
+    echo "<a class='dissabled'>1</a>";
+  }
+
+  /* 2 */
+  if($taulell[0][1] == 0){
+    echo  "<a href='index.php?accio=enviar_moviment&jugador=".$_REQUEST['jugador']."&partida=".$_REQUEST['partida']."&columna=2&username=".$_REQUEST['username']."' >2</a>"; 
+  }else{
+    echo "<a class='dissabled'>2</a>";
+  }
+
+  /* 3 */
+  if($taulell[0][2] == 0){
+    echo  "<a href='index.php?accio=enviar_moviment&jugador=".$_REQUEST['jugador']."&partida=".$_REQUEST['partida']."&columna=3&username=".$_REQUEST['username']."' >3</a>"; 
+  }else{
+    echo "<a class='dissabled'>3</a>";
+  }
+
+  /* 4 */
+  if($taulell[0][3] == 0){
+    echo  "<a href='index.php?accio=enviar_moviment&jugador=".$_REQUEST['jugador']."&partida=".$_REQUEST['partida']."&columna=4&username=".$_REQUEST['username']."' >4</a>"; 
+  }else{
+    echo "<a class='dissabled'>4</a>";
+  }
+
+  /* 5 */
+  if($taulell[0][4] == 0){
+    echo  "<a href='index.php?accio=enviar_moviment&jugador=".$_REQUEST['jugador']."&partida=".$_REQUEST['partida']."&columna=5&username=".$_REQUEST['username']."' >5</a>"; 
+  }else{
+    echo "<a class='dissabled'>5</a>";
+  }
+
+  /* 6 */
+  if($taulell[0][5] == 0){
+    echo  "<a href='index.php?accio=enviar_moviment&jugador=".$_REQUEST['jugador']."&partida=".$_REQUEST['partida']."&columna=6&username=".$_REQUEST['username']."' >6</a>"; 
+  }else{
+    echo "<a class='dissabled'>6</a>";
+  }
+
+   /* 7 */
+   if($taulell[0][6] == 0){
+    echo  "<a href='index.php?accio=enviar_moviment&jugador=".$_REQUEST['jugador']."&partida=".$_REQUEST['partida']."&columna=7&username=".$_REQUEST['username']."' >7</a>"; 
+  }else{
+    echo "<a class='dissabled'>7</a>";
+  }
+}
 ?>
 </body>
 </html>
